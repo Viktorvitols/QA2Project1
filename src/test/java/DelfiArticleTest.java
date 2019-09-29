@@ -4,7 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import sun.jvm.hotspot.types.CIntegerField;
+
+import java.util.List;
 
 public class DelfiArticleTest {
 
@@ -15,6 +16,7 @@ public class DelfiArticleTest {
     private final By ARTICLE_PAGE_COMMENTS = By.xpath(".//a[contains(@class, 'text-size-md-28')]");
     private final By COMMENTS_PAGE_TITLE = By.xpath(".//h1[@class = 'article-title']/a");
     private final By ARTICLE = By.xpath(".//span[@class = 'text-size-22 d-block']");
+    private final By COMMENT_PAGE_COMMENTS = By.xpath(".//span[@class = 'type-cnt']");
 
     @Test
     public void titleAndCommentsTest() {
@@ -58,7 +60,11 @@ public class DelfiArticleTest {
         Assertions.assertEquals(titleToCompare, apTitle, "Wrong title on article page!");
 
         //Find comment count (строкой ниже говнокод)
-        Integer apComments = Integer.valueOf(driver.findElement(ARTICLE_PAGE_COMMENTS).getText().substring(1, driver.findElement(ARTICLE_PAGE_COMMENTS).getText().length() - 1));
+        Integer apComments = 0;
+        if (!driver.findElements(ARTICLE_PAGE_COMMENTS).isEmpty()) {
+//            (строкой ниже говнокод)
+            apComments = Integer.valueOf(driver.findElement(ARTICLE_PAGE_COMMENTS).getText().substring(1, driver.findElement(ARTICLE_PAGE_COMMENTS).getText().length() - 1));
+        }
 
         //Check comment count
         Assertions.assertEquals(commentsToCompare, apComments, "Comments count is not the same as in the home page");
@@ -73,10 +79,25 @@ public class DelfiArticleTest {
         Assertions.assertEquals(titleToCompare, cpTitle, "Wrong title on comments page");
 
         //Get comment count
+        Integer cpComments = 0;
+        List<WebElement> cpAllComments = driver.findElements(COMMENT_PAGE_COMMENTS);
+        if (!cpAllComments.isEmpty()) {
+            WebElement anonComments = cpAllComments.get(0);
+            WebElement regComments = cpAllComments.get(1);
+            String numbersToParse = anonComments.getText();
+            String numbersToParse1 = regComments.getText();
+            numbersToParse = numbersToParse.substring(1, numbersToParse.length() - 1);
+            numbersToParse1 = numbersToParse1.substring(1, numbersToParse1.length() - 1);
+            Integer cpAnonComments = Integer.valueOf(numbersToParse);
+            Integer cpRegComments = Integer.valueOf(numbersToParse1);
+            cpComments = cpAnonComments + cpRegComments;
+        }
+
         //Check comment count
+        Assertions.assertEquals(commentsToCompare, cpComments, "Comment number on comment page is not the same as on the home page");
         //Close Browser!!!
+        driver.close();
 
     }
-
 
 }
