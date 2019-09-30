@@ -57,10 +57,12 @@ public class DelfiArticleTest {
 
         //Find title
         String apTitle;
+        Boolean delfiPlus = false;
         if (!driver.findElements(ARTICLE_PAGE_TITLE).isEmpty()) {
             apTitle = driver.findElement(ARTICLE_PAGE_TITLE).getText();
         } else {
             apTitle = driver.findElement(PLUS_ARTICLE_PAGE_TITLE).getText();
+            delfiPlus = true;
         }
 
         //Check title
@@ -74,43 +76,41 @@ public class DelfiArticleTest {
         }
 
         //Check comment count
-        Assertions.assertEquals(commentsToCompare, apComments, "Comments count is not the same as in the home page");
+        Assertions.assertEquals(commentsToCompare, apComments, "Comments count on article page is not the same as in the home page");
 
         //Open comments page
         //driver.findElement(ARTICLE_PAGE_TITLE).click(); ***не работает, если нет комментов***
         if (!driver.findElements(COMMENT_ICON).isEmpty()) {
             driver.findElement(COMMENT_ICON).click();
-        } else {
-            driver.close();
-            System.exit(0);
+            delfiPlus = false;
         }
+        if (delfiPlus = false) {
 
-        //Find title
-        String cpTitle = driver.findElement(COMMENTS_PAGE_TITLE).getText() + " "; //there is a fixed space in articles' title, probably to make a gap between the title and a comments count
+            //Find title
+            String cpTitle = driver.findElement(COMMENTS_PAGE_TITLE).getText() + " "; //there is a fixed space in articles' title, probably to make a gap between the title and a comments count
 
-        //Check title (compare with previous page)
-        Assertions.assertEquals(titleToCompare, cpTitle, "Wrong title on comments page");
+            //Check title (compare with previous page)
+            Assertions.assertEquals(titleToCompare, cpTitle, "Wrong title on comments page");
 
-        //Get comment count
-        Integer cpComments = 0;
-        List<WebElement> cpAllComments = driver.findElements(COMMENT_PAGE_COMMENTS);
-        if (!cpAllComments.isEmpty()) {
-            WebElement anonComments = cpAllComments.get(0);
-            WebElement regComments = cpAllComments.get(1);
-            String numbersToParse = anonComments.getText();
-            String numbersToParse1 = regComments.getText();
-            numbersToParse = numbersToParse.substring(1, numbersToParse.length() - 1);
-            numbersToParse1 = numbersToParse1.substring(1, numbersToParse1.length() - 1);
-            Integer cpAnonComments = Integer.valueOf(numbersToParse);
-            Integer cpRegComments = Integer.valueOf(numbersToParse1);
-            cpComments = cpAnonComments + cpRegComments;
+            //Get comment count
+            Integer cpComments = 0;
+            List<WebElement> cpAllComments = driver.findElements(COMMENT_PAGE_COMMENTS);
+            if (!cpAllComments.isEmpty()) {
+                WebElement anonComments = cpAllComments.get(0);
+                WebElement regComments = cpAllComments.get(1);
+                String numbersToParse = anonComments.getText();
+                String numbersToParse1 = regComments.getText();
+                numbersToParse = numbersToParse.substring(1, numbersToParse.length() - 1);
+                numbersToParse1 = numbersToParse1.substring(1, numbersToParse1.length() - 1);
+                Integer cpAnonComments = Integer.valueOf(numbersToParse);
+                Integer cpRegComments = Integer.valueOf(numbersToParse1);
+                cpComments = cpAnonComments + cpRegComments;
+            }
+
+            //Check comment count
+            Assertions.assertEquals(commentsToCompare, cpComments, "Comment number on comment page is not the same as on the home page");
         }
-
-        //Check comment count
-        Assertions.assertEquals(commentsToCompare, cpComments, "Comment number on comment page is not the same as on the home page");
         //Close Browser!!!
         driver.close();
-
     }
-
 }
