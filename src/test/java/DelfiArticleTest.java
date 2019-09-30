@@ -18,6 +18,7 @@ public class DelfiArticleTest {
     private final By ARTICLE = By.xpath(".//span[@class = 'text-size-22 d-block']");
     private final By COMMENT_PAGE_COMMENTS = By.xpath(".//span[@class = 'type-cnt']");
     private final By COMMENT_ICON = By.xpath(".//i[@class = 'icon-ui-comments']");
+    private final By PLUS_ARTICLE_PAGE_TITLE = By.xpath(".//h1[@class ='text-size-22  d-inline']");
 
     @Test
     public void titleAndCommentsTest() {
@@ -55,7 +56,12 @@ public class DelfiArticleTest {
         homePageTitle.click();
 
         //Find title
-        String apTitle = driver.findElement(ARTICLE_PAGE_TITLE).getText();
+        String apTitle;
+        if (!driver.findElements(ARTICLE_PAGE_TITLE).isEmpty()){
+            apTitle = driver.findElement(ARTICLE_PAGE_TITLE).getText();
+        } else{
+            apTitle = driver.findElement(PLUS_ARTICLE_PAGE_TITLE).getText();
+        }
 
         //Check title
         Assertions.assertEquals(titleToCompare, apTitle, "Wrong title on article page!");
