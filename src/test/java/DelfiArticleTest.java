@@ -75,7 +75,7 @@ public class DelfiArticleTest {
         driver.findElement(COMMENT_ICON).click();
 
         //Find title
-        String cpTitle = driver.findElement(COMMENTS_PAGE_TITLE).getText();
+        String cpTitle = driver.findElement(COMMENTS_PAGE_TITLE).getText() + " "; //there is a fixed space in articles' title, probably to make a gap between the title and a comments count
 
         //Check title (compare with previous page)
         Assertions.assertEquals(titleToCompare, cpTitle, "Wrong title on comments page");
