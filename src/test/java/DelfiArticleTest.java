@@ -57,9 +57,9 @@ public class DelfiArticleTest {
 
         //Find title
         String apTitle;
-        if (!driver.findElements(ARTICLE_PAGE_TITLE).isEmpty()){
+        if (!driver.findElements(ARTICLE_PAGE_TITLE).isEmpty()) {
             apTitle = driver.findElement(ARTICLE_PAGE_TITLE).getText();
-        } else{
+        } else {
             apTitle = driver.findElement(PLUS_ARTICLE_PAGE_TITLE).getText();
         }
 
@@ -78,7 +78,12 @@ public class DelfiArticleTest {
 
         //Open comments page
         //driver.findElement(ARTICLE_PAGE_TITLE).click(); ***не работает, если нет комментов***
-        driver.findElement(COMMENT_ICON).click();
+        if (!driver.findElements(COMMENT_ICON).isEmpty()) {
+            driver.findElement(COMMENT_ICON).click();
+        } else {
+            driver.close();
+            System.exit(0);
+        }
 
         //Find title
         String cpTitle = driver.findElement(COMMENTS_PAGE_TITLE).getText() + " "; //there is a fixed space in articles' title, probably to make a gap between the title and a comments count
