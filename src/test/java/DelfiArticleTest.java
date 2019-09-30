@@ -17,6 +17,7 @@ public class DelfiArticleTest {
     private final By COMMENTS_PAGE_TITLE = By.xpath(".//h1[@class = 'article-title']/a");
     private final By ARTICLE = By.xpath(".//span[@class = 'text-size-22 d-block']");
     private final By COMMENT_PAGE_COMMENTS = By.xpath(".//span[@class = 'type-cnt']");
+    private final By COMMENT_ICON = By.xpath(".//i[@class = 'icon-ui-comments']");
 
     @Test
     public void titleAndCommentsTest() {
@@ -70,7 +71,8 @@ public class DelfiArticleTest {
         Assertions.assertEquals(commentsToCompare, apComments, "Comments count is not the same as in the home page");
 
         //Open comments page
-        driver.findElement(ARTICLE_PAGE_COMMENTS).click();
+        //driver.findElement(ARTICLE_PAGE_TITLE).click(); ***не работает, если нет комментов***
+        driver.findElement(COMMENT_ICON).click();
 
         //Find title
         String cpTitle = driver.findElement(COMMENTS_PAGE_TITLE).getText();
