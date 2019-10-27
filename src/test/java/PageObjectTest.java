@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Test;
 import pages.BaseFunc;
+import pages.HomePage;
 
 public class PageObjectTest {
 
@@ -8,6 +9,9 @@ public class PageObjectTest {
     @Test
     public void poTest() {
         baseFunc.goToUrl("rus.delfi.lv");
+
+        HomePage homePage = new HomePage(baseFunc);
+        homePage.openFirstArticle();
 
     }
 }
